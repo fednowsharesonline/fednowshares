@@ -1,0 +1,40 @@
+if (!confirm("Reset the profile form and remove its locally saved details?")) {
+    return;
+  }
+
+  form.reset();
+
+  fields.forEach(function(id) {
+    try {
+      localStorage.removeItem("fednow_profile_" + id);
+    } catch (error) {
+      // Continue resetting the visible form.
+    }
+  });
+
+  try {
+    localStorage.removeItem("fednow_profile_photo");
+  } catch (error) {
+    // Continue resetting the visible form.
+  }
+
+  photoInput.value = "";
+  photoChanged = false;
+  clearPhotoPreview();
+  statusBox.classList.remove("show", "error");
+  updateNoticeName();
+}
+
+function hideNotice() {
+  document.getElementById("depositNotice").style.display = "none";
+}
+
+function submitDeposit() {
+  window.location.href = "index.html";
+}
+
+loadProfile();
+</script>
+
+</body>
+</html>
