@@ -1,0 +1,24 @@
+const configuredEmail = ADMIN_EMAIL.trim().toLowerCase();
+        // Check the email and password configured above.
+        if (
+            enteredEmail === configuredEmail &&
+            enteredPassword === ADMIN_PASSWORD
+        ) {
+            errorMessage.textContent = "";
+            errorMessage.classList.remove("visible");
+            // Redirect after successful login.
+            window.location.href = REDIRECT_PAGE;
+        } else {
+            errorMessage.textContent =
+                "Incorrect email address or password. Please check your details and try again.";
+            errorMessage.classList.add("visible");
+        }
+    });
+    // Clear error when the user edits their details.
+    loginForm.addEventListener("input", function () {
+        errorMessage.textContent = "";
+        errorMessage.classList.remove("visible");
+    });
+</script>
+</body>
+</html>
