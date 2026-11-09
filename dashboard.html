@@ -1,0 +1,35 @@
+setAttribute("aria-expanded", "false");
+}
+
+document.addEventListener("click", function(event) {
+    const supportMenu = document.getElementById("supportMenu");
+    const chatButton = document.querySelector(".chat-button");
+
+    if (
+        !supportMenu.contains(event.target) &&
+        !chatButton.contains(event.target)
+    ) {
+        closeSupport();
+    }
+});
+
+document.addEventListener("keydown", function(event) {
+    if (event.key === "Escape") {
+        closeSupport();
+    }
+});
+
+/*
+  Language options are placeholders.
+  Real translation requires translated page content.
+*/
+document.getElementById("languageSelect").addEventListener("change", function() {
+    if (this.value !== "en") {
+        this.value = "en";
+        alert("This language is not available yet.");
+    }
+});
+</script>
+
+</body>
+</html>
