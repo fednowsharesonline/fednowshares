@@ -1,0 +1,146 @@
+<span class="arrow">›</span>
+            </button>
+
+            <a href="withdraw.html" class="item">
+                <span class="item-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="m2 8 10-6 10 6H2ZM4 21h16M6 10v8M10 10v8M14 10v8M18 10v8"/>
+                    </svg>
+                </span>
+                <span class="item-label">WITHDRAW</span>
+                <span class="arrow">›</span>
+            </a>
+
+        </nav>
+    </section>
+
+    <footer class="footer">
+        ©️ <span id="year"></span> Fednow Shares. All rights reserved.
+    </footer>
+
+</main>
+
+<!-- CUSTOMER SUPPORT BUTTON -->
+
+<button class="chat" type="button"
+        aria-label="Customer Support"
+        aria-expanded="false"
+        aria-controls="supportMenu"
+        onclick="toggleSupport()">
+
+    <span class="bubble"></span>
+    <span class="online"></span>
+</button>
+
+<!-- SUPPORT OPTIONS -->
+
+<div class="support-menu" id="supportMenu">
+
+    <div class="support-title">Customer Support</div>
+
+    <p class="support-description">
+        Need assistance? Contact our support team.
+    </p>
+
+    <button class="support-option" type="button"
+            onclick="openEmail()">
+        <span class="support-icon">
+            <svg viewBox="0 0 24 24">
+                <rect x="3" y="5" width="18" height="14" rx="2"/>
+                <path d="m3 7 9 6 9-6"/>
+            </svg>
+        </span>
+        <span>Email Support</span>
+    </button>
+
+    <button class="support-option" type="button"
+            onclick="openWhatsApp()">
+        <span class="support-icon">
+            <svg viewBox="0 0 24 24">
+                <path d="M20 11.5a8 8 0 0 1-11.8 7L4 20l1.5-4.1A8 8 0 1 1 20 11.5Z"/>
+                <path d="M8.5 8.5c.3 2.1 2 4.2 4.2 5.2l1.5-.9c.2-.1.5-.1.7.1l1.2 1c.2.2.2.5 0 .7-.7.7-1.8 1-2.7.7-3.2-1-5.7-3.5-6.7-6.7-.3-.9 0-2 .7-2.7.2-.2.5-.2.7 0l1 1.2c.2.2.2.5.1.7l-.7 1.4Z"/>
+            </svg>
+        </span>
+        <span>WhatsApp Support</span>
+    </button>
+
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+let toastTimer;
+
+function goBack() {
+    if (window.history.length > 1) {
+        window.history.back();
+    } else {
+        window.location.href = "home.html";
+    }
+}
+
+function msg(text) {
+    const toast = document.getElementById("toast");
+
+    toast.textContent = text + " selected";
+    toast.classList.add("show");
+
+    clearTimeout(toastTimer);
+
+    toastTimer = setTimeout(function() {
+        toast.classList.remove("show");
+    }, 1800);
+}
+
+/* CUSTOMER SUPPORT */
+
+function toggleSupport() {
+    const menu = document.getElementById("supportMenu");
+    const button = document.querySelector(".chat");
+
+    const isOpen = menu.classList.toggle("show");
+
+    button.setAttribute("aria-expanded", String(isOpen));
+}
+
+function openEmail() {
+    window.location.href =
+        "mailto:Fednowsharesteam@gmail.com?subject=Fednow%20Shares%20Support";
+}
+
+function openWhatsApp() {
+    window.open(
+        "https://wa.me/447549589541?text=Hello%20Fednow%20Shares%20Support%2C%20I%20need%20assistance.",
+        "_blank",
+        "noopener,noreferrer"
+    );
+}
+
+/* CLOSE SUPPORT MENU */
+
+document.addEventListener("click", function(event) {
+    const menu = document.getElementById("supportMenu");
+    const button = document.querySelector(".chat");
+
+    if (
+        menu.classList.contains("show") &&
+        !menu.contains(event.target) &&
+        !button.contains(event.target)
+    ) {
+        menu.classList.remove("show");
+        button.setAttribute("aria-expanded", "false");
+    }
+});
+
+document.addEventListener("keydown", function(event) {
+    if (event.key === "Escape") {
+        document.getElementById("supportMenu").classList.remove("show");
+        document.querySelector(".chat").setAttribute("aria-expanded", "false");
+    }
+});
+
+document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
