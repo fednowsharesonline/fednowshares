@@ -1,0 +1,121 @@
+Update the sample rows with real
+      records, or connect the page to a secure backend.
+    */
+
+    let toastTimer;
+
+    function showMessage(message) {
+        const toast = document.getElementById("toast");
+
+        toast.textContent = message;
+        toast.classList.add("show");
+
+        clearTimeout(toastTimer);
+
+        toastTimer = setTimeout(function() {
+            toast.classList.remove("show");
+        }, 2600);
+    }
+
+    function showSupportMessage() {
+        showMessage(
+            "Customer support is not connected yet. Add your official support link here."
+        );
+    }
+
+    const searchInput = document.getElementById("transactionSearch");
+    const statusFilter = document.getElementById("statusFilter");
+    const transactionRows = Array.from(
+        document.querySelectorAll("#transactionRows tr")
+    );
+    const emptyState = document.getElementById("emptyState");
+    const tableInfo = document.getElementById("tableInfo");
+
+    function filterTransactions() {
+        const query = searchInput.value.trim().toLowerCase();
+        const selectedStatus = statusFilter.value;
+        let visibleCount = 0;
+
+        transactionRows.forEach(function(row) {
+            const searchableText =
+                (row.dataset.search + " " + row.textContent).toLowerCase();
+
+            const matchesSearch = searchableText.includes(query);
+            const matchesStatus =
+                selectedStatus === "all" ||
+                row.dataset.status === selectedStatus;
+
+            const visible = matchesSearch && matchesStatus;
+
+            row.hidden = !visible;
+
+            if (visible) {
+                visibleCount++;
+            }
+        });
+
+        emptyState.style.display = visibleCount === 0 ? "block" : "none";
+
+        tableInfo.textContent =
+            "Showing " + visibleCount +
+            (visibleCount === 1 ? " transaction" : " transactions");
+
+        updateSummary();
+    }
+
+    function updateSummary() {
+        /*
+          These summary values are derived from the displayed sample rows.
+          In production, calculate financial totals from verified backend
+          transaction records, not browser-editable HTML.
+        */
+
+        document.getElementById("totalTransactions").textContent =
+            transactionRows.length;
+
+        const pendingCount = transactionRows.filter(function(row) {
+            return row.dataset.status === "pending";
+        }).length;
+
+        document.getElementById("pendingTransactions").textContent =
+            pendingCount;
+
+        let inflows = 0;
+
+        transactionRows.forEach(function(row) {
+            if (row.dataset.status !== "completed") return;
+
+            const amountElement = row.querySelector(".amount");
+            if (!amountElement || !amountElement.classList.contains("positive")) {
+                return;
+            }
+
+            const amount = Number(
+                amountElement.textContent.replace(/[^0-9.-]/g, "")
+            );
+
+            if (Number.isFinite(amount)) {
+                inflows += amount;
+            }
+        });
+
+        document.getElementById("totalInflows").textContent =
+            new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD"
+            }).format(inflows);
+    }
+
+    searchInput.addEventListener("input", filterTransactions);
+    statusFilter.addEventListener("change", filterTransactions);
+
+    function goHome() {
+        window.location.href = "index.html";
+    }
+
+    // Initialize the displayed sample summary.
+    updateSummary();
+</script>
+
+</body>
+</html>
