@@ -1,0 +1,124 @@
+<span class="transaction-label">TRANSACTION ID</span>
+                <span class="transaction-id" id="transactionId">
+                    FED638R8GH
+                </span>
+            </div>
+
+            <button class="deposit-again"
+                    onclick="location.href='add-money.html'">
+                + DEPOSIT AGAIN
+            </button>
+
+        </div>
+
+    </section>
+
+    <footer class="page-footer">
+        ©️ 2026 FedNow Shares. All rights reserved.
+    </footer>
+
+</main>
+
+<!-- CUSTOMER SUPPORT BUTTON -->
+
+<button class="chat-button"
+        onclick="openSupport()"
+        aria-label="Open customer support options"
+        aria-expanded="false"
+        aria-controls="supportMenu">
+
+    <svg viewBox="0 0 24 24">
+        <path d="M12 3C6.9 3 3 6.5 3 11c0 2.1.9 4 2.5 5.4L5 21l4.8-2.1c.7.2 1.5.3 2.2.3 5.1 0 9-3.5 9-8.2S17.1 3 12 3Zm0 2c3.9 0 7 2.5 7 6s-3.1 6.2-7 6.2c-.7 0-1.5-.1-2.2-.3l-.7-.2-2.1.9.2-2.2-.7-.6C5.5 13.7 5 12.4 5 11c0-3.5 3.1-6 7-6Z"/>
+    </svg>
+
+    <span class="chat-dot"></span>
+</button>
+
+<!-- CUSTOMER SUPPORT OPTIONS -->
+
+<div class="support-menu"
+     id="supportMenu"
+     aria-label="Customer support options">
+
+    <p class="support-title">Customer Support</p>
+    <p class="support-description">How can we help you today?</p>
+
+    <a class="support-link email-support"
+       href="mailto:Fednowsharesteam@gmail.com?subject=Fednow%20Shares%20Customer%20Support">
+        Email Support
+    </a>
+
+    <a class="support-link whatsapp-support"
+       href="https://wa.me/447549589541"
+       target="_blank"
+       rel="noopener noreferrer">
+        WhatsApp Support
+    </a>
+
+</div>
+
+<script>
+function toggleMenu() {
+    location.href = "dashboard.html";
+}
+
+function openSupport() {
+    const supportMenu = document.getElementById("supportMenu");
+    const chatButton = document.querySelector(".chat-button");
+    const isOpen = supportMenu.classList.toggle("open");
+
+    chatButton.setAttribute("aria-expanded", String(isOpen));
+}
+
+function closeSupport() {
+    const supportMenu = document.getElementById("supportMenu");
+    const chatButton = document.querySelector(".chat-button");
+
+    supportMenu.classList.remove("open");
+    chatButton.setAttribute("aria-expanded", "false");
+}
+
+document.addEventListener("click", function(event) {
+    const supportMenu = document.getElementById("supportMenu");
+    const chatButton = document.querySelector(".chat-button");
+
+    if (!supportMenu.contains(event.target) &&
+        !chatButton.contains(event.target)) {
+        closeSupport();
+    }
+});
+
+document.addEventListener("keydown", function(event) {
+    if (event.key === "Escape") {
+        closeSupport();
+    }
+});
+
+/* Read the deposit amount from the URL when provided. */
+const params = new URLSearchParams(window.location.search);
+const amountValue = params.get("amount");
+const amount = Number(amountValue);
+
+if (
+    amountValue !== null &&
+    amountValue.trim() !== "" &&
+    Number.isFinite(amount) &&
+    amount > 0
+) {
+    document.getElementById("depositAmount").textContent =
+        "$" + amount.toLocaleString("en-US", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }) + " Deposit";
+}
+
+/*
+  IMPORTANT:
+  The displayed payment status and transaction ID are sample page content.
+  A real payment system must retrieve the verified status and transaction ID
+  from a trusted backend after confirming the payment.
+*/
+</script>
+
+</body>
+</html>
