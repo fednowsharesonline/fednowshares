@@ -1,0 +1,122 @@
+getElementById("instructions").textContent =
+        payment.instructions;
+
+      document.getElementById("walletAddress").textContent =
+        payment.address;
+
+      const networkNote = document.getElementById("networkNote");
+
+      networkNote.replaceChildren();
+
+      const networkStrong = document.createElement("strong");
+      networkStrong.textContent = "Network: ";
+
+      networkNote.appendChild(networkStrong);
+      networkNote.appendChild(
+        document.createTextNode(payment.network + ".")
+      );
+      networkNote.appendChild(document.createElement("br"));
+      networkNote.appendChild(
+        document.createTextNode(
+          "Verify the network before sending your cryptocurrency."
+        )
+      );
+
+      document.getElementById("qrCode").src =
+        "https://api.qrserver.com/v1/create-qr-code/?size=164x164&data=" +
+        encodeURIComponent(payment.address);
+
+      document.getElementById("qrCode").alt =
+        "QR code for the " + payment.title + " wallet address";
+
+      document.getElementById("status").textContent = "";
+      document.getElementById("copyButton").innerHTML =
+        '<span aria-hidden="true">▢</span> Copy Address';
+    }
+
+    async function copyAddress() {
+      const address = PAYMENT_CONFIG[selectedCoin].address;
+      const status = document.getElementById("status");
+
+      if (
+        !address ||
+        address.startsWith("YOUR_") ||
+        address.includes("SET YOUR NETWORK")
+      ) {
+        status.textContent =
+          "The wallet address has not been configured.";
+        return;
+      }
+
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(address);
+        } else {
+          const temporaryInput = document.createElement("textarea");
+          temporaryInput.value = address;
+          temporaryInput.setAttribute("readonly", "");
+          temporaryInput.style.position = "fixed";
+          temporaryInput.style.opacity = "0";
+
+          document.body.appendChild(temporaryInput);
+          temporaryInput.select();
+
+          const copied = document.execCommand("copy");
+          temporaryInput.remove();
+
+          if (!copied) {
+            throw new Error("Copy command failed");
+          }
+        }
+
+        status.textContent = "Wallet address copied successfully.";
+
+        document.getElementById("copyButton").innerHTML =
+          '<span aria-hidden="true">✓</span> Copied!';
+      } catch (error) {
+        status.textContent =
+          "Copy failed. Please select the wallet address and copy it manually.";
+      }
+    }
+
+    document.getElementById("year").textContent =
+      new Date().getFullYear();
+
+    selectCoin("BTC");
+
+    /* CUSTOMER SUPPORT MENU */
+
+    function openSupport() {
+      const supportMenu = document.getElementById("supportMenu");
+      const chatButton = document.getElementById("chatButton");
+
+      const isOpen = supportMenu.classList.toggle("open");
+
+      chatButton.setAttribute("aria-expanded", String(isOpen));
+    }
+
+    document.addEventListener("click", function(event) {
+      const supportMenu = document.getElementById("supportMenu");
+      const chatButton = document.getElementById("chatButton");
+
+      if (
+        !supportMenu.contains(event.target) &&
+        !chatButton.contains(event.target)
+      ) {
+        supportMenu.classList.remove("open");
+        chatButton.setAttribute("aria-expanded", "false");
+      }
+    });
+
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "Escape") {
+        document.getElementById("supportMenu").classList.remove("open");
+
+        document.getElementById("chatButton")
+          .setAttribute("aria-expanded", "false");
+      }
+    });
+  </script>
+
+</body>
+</html>
