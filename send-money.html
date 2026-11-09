@@ -1,0 +1,82 @@
+recipientInput.addEventListener("input", function() {
+        hideError();
+        updateSummary();
+    });
+
+    amountInput.addEventListener("input", function() {
+        hideError();
+        updateSummary();
+    });
+
+    noteInput.addEventListener("input", hideError);
+
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
+        hideError();
+
+        const recipient = recipientInput.value.trim();
+        const amountText = amountInput.value.trim();
+        const amount = Number(amountText);
+        const note = noteInput.value.trim();
+
+        const validAmount =
+            /^\d+(\.\d{1,2})?$/.test(amountText) &&
+            Number.isFinite(amount) &&
+            amount >= 0.01 &&
+            amount <= 1000000000;
+
+        if (!recipient || recipient.length > 100) {
+            showError("Please enter a valid recipient username or user ID.");
+            recipientInput.focus();
+            return;
+        }
+
+        if (!validAmount) {
+            showError(
+                "Please enter a valid USD amount with no more than two decimal places."
+            );
+            amountInput.focus();
+            return;
+        }
+
+        document.getElementById("modalRecipient").textContent = recipient;
+        document.getElementById("modalAmount").textContent = formatUSD(amount);
+
+        const noteRow = document.getElementById("modalNoteRow");
+        const modalNote = document.getElementById("modalNote");
+
+        if (note) {
+            modalNote.textContent = note;
+            noteRow.hidden = false;
+        } else {
+            modalNote.textContent = "";
+            noteRow.hidden = true;
+        }
+
+        modal.classList.add("show");
+        dashboardButton.focus();
+    });
+
+    dashboardButton.addEventListener("click", function() {
+        window.location.href = "dashboard.html";
+    });
+
+    // Close the preview by clicking the dark backdrop.
+    // This does not submit or transfer any money.
+    modal.addEventListener("click", function(event) {
+        if (event.target === modal) {
+            modal.classList.remove("show");
+            document.getElementById("sendMoneyButton")?.focus();
+        }
+    });
+
+    // Escape closes the preview and returns focus to the form.
+    document.addEventListener("keydown", function(event) {
+        if (event.key === "Escape" && modal.classList.contains("show")) {
+            modal.classList.remove("show");
+        }
+    });
+</script>
+
+</body>
+</html>
