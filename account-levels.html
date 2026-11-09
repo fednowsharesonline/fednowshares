@@ -1,0 +1,131 @@
+<div class="level-status">UPGRADE AVAILABLE</div>
+                </div>
+
+                <h3>Level 3</h3>
+                <p class="level-description">
+                    A higher account level with an increased investment range.
+                </p>
+
+                <div class="limit-box">
+                    <div class="limit-label">Investment Range</div>
+                    <div class="limit-value">
+                        $2,000 <small>to</small> $10,000
+                    </div>
+                </div>
+
+                <a href="add-money.html" class="level-button">
+                    UPGRADE ACCOUNT →
+                </a>
+            </article>
+
+            <!-- LEVEL 4 -->
+
+            <article class="level-card">
+                <div class="card-top">
+                    <div class="level-number">04</div>
+                    <div class="level-status">UPGRADE AVAILABLE</div>
+                </div>
+
+                <h3>Level 4</h3>
+                <p class="level-description">
+                    The highest account level in the current level structure.
+                </p>
+
+                <div class="limit-box">
+                    <div class="limit-label">Investment Range</div>
+                    <div class="limit-value">
+                        $10,000 <small>to</small> Unlimited
+                    </div>
+                </div>
+
+                <a href="add-money.html" class="level-button">
+                    UPGRADE ACCOUNT →
+                </a>
+            </article>
+
+        </section>
+
+        <section class="footer-note">
+            <strong>Important:</strong>
+            To upgrade your account to higher limit choose a prefer account tier limit and click the upgrade button to continue
+            
+        </section>
+
+        <nav class="bottom-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="add-money.html">Add Money</a>
+            <a href="transactions.html">Transaction History</a>
+            <a href="index.html">Home</a>
+        </nav>
+
+    </main>
+
+    <script>
+        /*
+          OPTIONAL NOTICE SETTINGS
+
+          You can edit these values instead of searching through the HTML.
+          For a green notice, use "green".
+          For a red notice, use "red".
+        */
+
+        const accountNotice = {
+            color: "green",
+
+            heading: "Important Account Notice",
+
+            message:
+                "Review the account levels below to understand the available investment ranges. If you need to add funds before proceeding, click the Submit button below to continue to the deposit page.",
+
+            buttonText: "SUBMIT",
+
+            buttonLink: "add-money.html"
+        };
+
+        const noticeColors = {
+            green: {
+                background: "#e5f7eb",
+                border: "#24a148",
+                text: "#176b35"
+            },
+
+            red: {
+                background: "#fde8e8",
+                border: "#dc2626",
+                text: "#991b1b"
+            }
+        };
+
+        const selectedNoticeColor =
+            noticeColors[accountNotice.color] || noticeColors.green;
+
+        document.documentElement.style.setProperty(
+            "--notice-bg",
+            selectedNoticeColor.background
+        );
+
+        document.documentElement.style.setProperty(
+            "--notice-border",
+            selectedNoticeColor.border
+        );
+
+        document.documentElement.style.setProperty(
+            "--notice-text",
+            selectedNoticeColor.text
+        );
+
+        document.getElementById("noticeHeading").textContent =
+            accountNotice.heading;
+
+        document.getElementById("noticeMessage").textContent =
+            accountNotice.message;
+
+        document.getElementById("noticeButton").textContent =
+            accountNotice.buttonText;
+
+        document.getElementById("noticeButton").href =
+            accountNotice.buttonLink;
+    </script>
+
+</body>
+</html>
