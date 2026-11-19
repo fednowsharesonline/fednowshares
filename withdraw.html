@@ -1,0 +1,152 @@
+formatUSD(amount) + " USD";
+
+    document.getElementById("reviewCharge").textContent =
+        formatUSD(fee) + " USD";
+
+    document.getElementById("reviewPaymentMethod").textContent =
+        method || "Not selected";
+
+    document.getElementById("reviewNetwork").textContent =
+        network || "Not selected";
+
+    document.getElementById("reviewAddress").textContent =
+        getShortAddress(address);
+
+    document.getElementById("reviewTotal").textContent =
+        formatUSD(amount + fee) + " USD";
+}
+
+
+/* =====================================================
+   INPUT EVENTS
+   ===================================================== */
+
+paymentMethod.addEventListener("change", function() {
+    populateNetworks(paymentMethod.value);
+});
+
+networkSelect.addEventListener("change", updateReview);
+amountInput.addEventListener("input", updateReview);
+walletAddress.addEventListener("input", updateReview);
+
+
+/* =====================================================
+   SUBMIT / BASIC CLIENT-SIDE VALIDATION
+   ===================================================== */
+
+withdrawalForm.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const amount = Number(amountInput.value);
+    const address = walletAddress.value.trim();
+    const network = networkSelect.value;
+
+    result.classList.remove("show");
+
+    if (
+        amountInput.value.trim() === "" ||
+        !Number.isFinite(amount) ||
+        amount < WITHDRAWAL_CONFIG.minimumAmount ||
+        amount > WITHDRAWAL_CONFIG.maximumAmount
+    ) {
+        alert(
+            "Enter a valid withdrawal amount between " +
+            formatUSD(WITHDRAWAL_CONFIG.minimumAmount) +
+            " and " +
+            formatUSD(WITHDRAWAL_CONFIG.maximumAmount) +
+            "."
+        );
+        amountInput.focus();
+        return;
+    }
+
+    if (!paymentMethod.value) {
+        alert("Please select a payment method.");
+        paymentMethod.focus();
+        return;
+    }
+
+    if (!network) {
+        alert("Please select a withdrawal network.");
+        networkSelect.focus();
+        return;
+    }
+
+    if (!address) {
+        alert("Please enter your destination wallet address.");
+        walletAddress.focus();
+        return;
+    }
+
+    if (address.length < 10) {
+        alert("Please check the wallet address you entered.");
+        walletAddress.focus();
+        return;
+    }
+
+    document.getElementById("resultTitle").textContent =
+        "Details Ready for Review";
+
+    document.getElementById("resultMessage").textContent =
+        "Amount: " + formatUSD(amount) +
+        " USD. Method: " + paymentMethod.value +
+        ". Network: " + network + ".";
+
+    document.getElementById("editableNotice").textContent =
+        WITHDRAWAL_CONFIG.reviewNotice;
+
+    result.classList.add("show");
+
+    result.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+    });
+});
+
+
+/* =====================================================
+   SUPPORT
+   ===================================================== */
+
+function openSupport() {
+    const choice = confirm(
+        "CUSTOMER SUPPORT\n\n" +
+        "Select OK to contact support by email.\n" +
+        "Select Cancel to open WhatsApp."
+    );
+
+    if (choice) {
+        window.location.href =
+            "mailto:fednowsharesteam@gmail.com";
+    } else {
+        window.open(
+            "https://wa.me/447716752413",
+            "_blank",
+            "noopener,noreferrer"
+        );
+    }
+}
+
+
+/* =====================================================
+   NAVIGATION
+   ===================================================== */
+
+function goBack() {
+    if (window.history.length > 1 && document.referrer) {
+        window.history.back();
+    } else {
+        window.location.href = "dashboard.html";
+    }
+}
+
+
+/* =====================================================
+   INITIALIZE
+   ===================================================== */
+
+document.getElementById("chargeNotice").textContent =
+    WITHDRAWAL_CONFIG.accountNotice;
+
+document.getElementById("currentYear").textContent =
+    new Date().getFullYear();
